@@ -35,18 +35,43 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
+                        // ====================================================
+                        // LIBERAÇÃO DOS ARQUIVOS ESTÁTICOS (FRONTEND)
+                        // ====================================================
+                        .requestMatchers(
+                            "/",                 // Raiz do site
+                            "/index.html",       // Página inicial
+                            "/login.html",       // Login
+                            "/cadastro.html",    // Cadastro
+                            "/recuperacao.html", // Recuperar senha
+                            "/sobre.html",       // Páginas institucionais
+                            "/recursos.html",
+                            "/plataforma.html",  // O HTML carrega, mas os dados via API pedirão token
+                            "/style.css",        // Seu CSS principal
+                            "/css/**",           // Pasta de CSS (se houver)
+                            "/js/**",            // Seus scripts (auth.js, config.js, etc)
+                            "/imagens/**",       // Suas logos e ícones
+                            "/favicon.ico"       // Ícone da aba
+                        ).permitAll()
+
+                        // ====================================================
+                        // ENDPOINTS PÚBLICOS DA API (BACKEND)
+                        // ====================================================
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/reset-password/request").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/reset-password/confirm").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/discentes").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/discentes").permitAll() // Cadastro de aluno
                         .requestMatchers(HttpMethod.POST, "/responsaveis").permitAll()
                         .requestMatchers(HttpMethod.GET, "/cursos").permitAll()
                         .requestMatchers(HttpMethod.GET, "/atividades").permitAll()
                         .requestMatchers(HttpMethod.GET, "/subtipos").permitAll()
 
-                        // H2 Console
+                        // H2 Console (Apenas para dev local)
                         .requestMatchers("/h2-console/**").permitAll()
 
+                        // ====================================================
+                        // TODO O RESTO EXIGE LOGIN (TOKEN JWT)
+                        // ====================================================
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions(frame -> frame.disable()))
@@ -57,8 +82,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        // Permite qualquer origem (Frontend e Backend juntos ou separados)
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
