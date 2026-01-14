@@ -38,6 +38,8 @@ public class SecurityConfig {
                         // ====================================================
                         // LIBERAÇÃO DOS ARQUIVOS ESTÁTICOS (FRONTEND)
                         // ====================================================
+                        // O navegador precisa baixar o HTML sem enviar Token.
+                        // A proteção dos DADOS continua sendo feita na API.
                         .requestMatchers(
                             "/",                 // Raiz do site
                             "/index.html",       // Página inicial
@@ -46,7 +48,23 @@ public class SecurityConfig {
                             "/recuperacao.html", // Recuperar senha
                             "/sobre.html",       // Páginas institucionais
                             "/recursos.html",
-                            "/plataforma.html",  // O HTML carrega, mas os dados via API pedirão token
+                            "/plataforma.html",
+                            
+                            // --- DASHBOARDS E PÁGINAS INTERNAS ---
+                            "/dashboard_aluno.html",
+                            "/dashboard_admin.html",
+                            "/dashboard_coordenador.html",
+                            "/meu_perfil.html",
+                            "/minhas_atividades.html",
+                            "/cadastrar_solicitacao.html",
+                            "/lancamento_manual.html",
+                            "/admin_usuarios.html",
+                            "/coordenador_alunos.html",
+                            "/coordenador_configuracao.html",
+                            "/coordenador_relatorio.html",
+                            "/backup_logs_admin.html",
+                            
+                            // --- RECURSOS (CSS, JS, IMAGENS) ---
                             "/style.css",        // Seu CSS principal
                             "/css/**",           // Pasta de CSS (se houver)
                             "/js/**",            // Seus scripts (auth.js, config.js, etc)
@@ -82,7 +100,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Permite qualquer origem (Frontend e Backend juntos ou separados)
+        // Permite qualquer origem
         configuration.setAllowedOriginPatterns(Arrays.asList("*")); 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
