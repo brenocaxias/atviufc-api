@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGAC - Área do Aluno</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="imagens/favicon sigac ofc.png">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm py-2 anime-start">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="imagens/favicon sigac ofc.png" alt="Logo SIGAC" height="70">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-3 ms-4">
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold text-primary" href="dashboard_aluno.html">
+                            <i class='bx bxs-dashboard'></i> Início
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="minhas_atividades.html">
+                            <i class='bx bx-book-open'></i> Minhas Atividades
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-center gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary fw-semibold" href="meu_perfil.html">
+                            <i class='bx bx-user-circle'></i> Meu Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block text-muted">|</li>
+                    <li class="nav-item">
+                        <button onclick="logout()" class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold">
+                            <i class='bx bx-log-out'></i> Sair
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5">
+        
+        <div class="row pt-4 mb-4 anime-start" style="transition-delay: 0.1s;">
+            <div class="col-12">
+                <h3 class="fw-bold text-dark">Painel de Controle</h3>
+                <p class="text-muted">Visão geral das suas atividades complementares.</p>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5 anime-start" style="transition-delay: 0.2s;">
+          
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Total de Horas Aprovadas</h5>
+                        <div class="d-flex justify-content-between align-items-end mb-2">
+                            <span class="display-6 fw-bold text-dark" id="totalHoras">0 h</span>
+                            <span class="text-muted">Meta: 200 h</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-primary" id="barraProgresso" role="progressbar" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 text-center d-flex flex-column justify-content-center align-items-center">
+                        <h5 class="card-title fw-bold mb-0">Atividades em Análise</h5>
+                        <h2 class="display-3 fw-bold text-dark my-2" id="totalPendentes">0</h2>
+                        <span class="text-secondary px-3 py-2 rounded-pill">
+                            Submissões aguardando avaliação
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5 anime-start" style="transition-delay: 0.3s;">
+            <div class="col-12 text-center">
+                <a href="cadastrar_solicitacao.html" class="btn btn-primary btn-lg shadow-sm rounded-pill px-5">
+                    <i class='bx bx-plus-circle'></i> CADASTRAR SOLICITAÇÃO DE ATIVIDADE
+                </a>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-5 anime-start" style="transition-delay: 0.4s;">
+            <div class="card-header bg-white py-3 border-0">
+                <h5 class="mb-0 fw-bold text-dark"><i class='bx bx-history text-primary'></i> Meu Histórico Recente</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col" class="ps-4 py-3">Atividade</th>
+                                <th scope="col" class="py-3">Carga Horária</th>
+                                <th scope="col" class="py-3">Data Envio</th>
+                                <th scope="col" class="py-3">Status</th>
+                                <th scope="col" class="pe-4 py-3 text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                    Carregando dados...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="modalJustificativa" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold"><i class='bx bx-error-circle'></i> Motivo da Rejeição</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-light border border-danger-subtle text-danger">
+                        Sem justificativa disponível.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalDetalhes" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg"> <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class='bx bx-file'></i> Detalhes da Atividade</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="small text-muted fw-bold">ID da Solicitação</label>
+                            <div class="fs-5 fw-bold text-dark" id="detalheId">#000</div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <label class="small text-muted fw-bold d-block">Status Atual</label>
+                            <span class="badge bg-secondary rounded-pill px-3 fs-6" id="detalheStatus">Carregando...</span>
+                        </div>
+
+                        <hr class="text-muted my-2 opacity-25">
+
+                        <div class="col-md-12">
+                            <label class="small text-muted fw-bold">Tipo de Atividade</label>
+                            <div class="fs-6" id="detalheSubtipo">...</div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="small text-muted fw-bold">Descrição / Título</label>
+                            <div class="p-3 bg-light rounded border text-secondary" id="detalheObservacao">
+                                ...
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="small text-muted fw-bold">Data Início</label>
+                            <div class="fw-semibold" id="detalheInicio">--/--/----</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="small text-muted fw-bold">Data Fim</label>
+                            <div class="fw-semibold" id="detalheFim">--/--/----</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="small text-muted fw-bold">Carga Horária</label>
+                            <div class="fw-bold text-primary fs-5" id="detalheHoras">0h</div>
+                        </div>
+                        
+                        <div class="col-12 mt-4 pt-3 border-top">
+                            <div class="d-grid">
+                                <button id="btnDownload" type="button" class="btn btn-outline-primary fw-bold">
+                                    <i class='bx bx-download'></i> VISUALIZAR ARQUIVO
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/aluno.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof verificarAutenticacao === 'function') verificarAutenticacao();
+            setTimeout(() => document.querySelectorAll('.anime-start').forEach(el => el.classList.add('anime-end')), 100);
+            if (typeof verificarAutenticacao === 'function') verificarAutenticacao();
+            
+            if (typeof carregarDashboardAluno === 'function' && window.location.pathname.includes('dashboard')) {
+                carregarDashboardAluno();
+            }
+            if (typeof carregarPerfil === 'function') carregarPerfil();
+        });
+    </script>
+
+    <footer class="text-center py-4 mt-5 border-top">
+        <p class="text-muted small mb-0">© 2025 SIGAC - Universidade Federal do Ceará (Campus Sobral).</p>
+    </footer>
+</body>
+</html>

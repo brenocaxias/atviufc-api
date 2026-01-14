@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGAC - Minhas Atividades</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="imagens/favicon sigac ofc.png">
+</head>
+
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm py-2 anime-start">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="imagens/favicon sigac ofc.png" alt="Logo SIGAC" height="70">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-3 ms-4">
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="dashboard_aluno.html">
+                            <i class='bx bxs-dashboard'></i> Início
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fw-bold text-primary" href="minhas_atividades.html">
+                            <i class='bx bx-book-open'></i> Minhas Atividades
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-center gap-3">
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary fw-semibold" href="meu_perfil.html">
+                            <i class='bx bx-user-circle'></i> Meu Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block text-muted">|</li>
+                    <li class="nav-item">
+                        <button onclick="logout()" class="btn btn-outline-danger btn-sm rounded-pill px-4 fw-bold">
+                            <i class='bx bx-log-out'></i> Sair
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5 pb-5">
+        
+        <div class="row pt-4 mb-4 align-items-end anime-start" style="transition-delay: 0.1s;">
+            <div class="col-md-8">
+                <h3 class="fw-bold text-dark mb-1">Histórico de Atividades</h3>
+                <p class="text-muted mb-0">Gerencie todas as suas solicitações enviadas.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="cadastrar_solicitacao.html" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+                    <i class='bx bx-plus'></i> Nova Solicitação
+                </a>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4 anime-start" style="transition-delay: 0.2s;">
+            <div class="card-body p-3">
+                <div class="row g-2">
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class='bx bx-search'></i></span>
+                            <input type="text" id="filtroTexto" class="form-control border-start-0 ps-0" placeholder="Buscar por título ou tipo...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filtroStatus">
+                            <option value="" selected>Status: Todos</option>
+                            <option value="DEFERIDO">Aprovados (Deferido)</option>
+                            <option value="PENDENTE">Pendentes</option>
+                            <option value="INDEFERIDO">Rejeitados (Indeferido)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="filtroAno">
+                            <option value="" selected>Ano: Todos</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-primary w-100" onclick="aplicarFiltros()">
+                            <i class='bx bx-filter-alt'></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4 anime-start" style="transition-delay: 0.3s;">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light border-bottom">
+                            <tr>
+                                <th scope="col" class="ps-4 py-3">Título da Atividade</th>
+                                <th scope="col" class="py-3">Horas</th>
+                                <th scope="col" class="py-3">Submissão</th>
+                                <th scope="col" class="py-3">Status</th>
+                                <th scope="col" class="pe-4 py-3 text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaCorpo">
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <div class="spinner-border spinner-border-sm text-primary mb-2" role="status"></div>
+                                    <p class="small mb-0">Carregando histórico...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-white border-0 py-3">
+                <nav aria-label="Navegação">
+                    <ul class="pagination justify-content-center mb-0" id="paginacaoContainer">
+                        </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="modalDetalhes" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg"> 
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class='bx bx-file'></i> Detalhes da Atividade</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="small text-muted fw-bold">ID da Solicitação</label>
+                            <div class="fs-5 fw-bold text-dark" id="detalheId">#000</div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <label class="small text-muted fw-bold d-block">Status Atual</label>
+                            <span class="badge bg-secondary rounded-pill px-3 fs-6" id="detalheStatus">Carregando...</span>
+                        </div>
+                        <hr class="text-muted my-2 opacity-25">
+                        <div class="col-md-12">
+                            <label class="small text-muted fw-bold">Tipo de Atividade</label>
+                            <div class="fs-6" id="detalheSubtipo">...</div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="small text-muted fw-bold">Descrição / Título</label>
+                            <div class="p-3 bg-light rounded border text-secondary" id="detalheObservacao">...</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="small text-muted fw-bold">Data Início</label>
+                            <div class="fw-semibold" id="detalheInicio">--/--/----</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="small text-muted fw-bold">Data Fim</label>
+                            <div class="fw-semibold" id="detalheFim">--/--/----</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="small text-muted fw-bold">Carga Horária</label>
+                            <div class="fw-bold text-primary fs-5" id="detalheHoras">0h</div>
+                        </div>
+                        <div class="col-12 mt-4 pt-3 border-top">
+                            <div class="d-grid">
+                                <button id="btnDownload" type="button" class="btn btn-outline-primary fw-bold">
+                                    <i class='bx bx-file'></i> VISUALIZAR ARQUIVO
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalJustificativa" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold"><i class='bx bx-error-circle'></i> Motivo da Rejeição</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-light border border-danger-subtle text-danger mb-0">
+                        Sem justificativa disponível.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/aluno.js"></script>
+    <script>
+        let listaAtual = [];
+        let paginaAtual = 1;
+        const itensPorPagina = 5; 
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            setTimeout(() => document.querySelectorAll('.anime-start').forEach(el => el.classList.add('anime-end')), 100);
+            if (typeof verificarAutenticacao === 'function') verificarAutenticacao();
+
+            if (typeof carregarDashboardAluno === 'function') {
+                await carregarDashboardAluno(); 
+                
+                if(typeof cacheSolicitacoesAluno !== 'undefined') {
+                    listaAtual = [...cacheSolicitacoesAluno];
+                    listaAtual.sort((a, b) => new Date(b.dataSolicitacao || 0) - new Date(a.dataSolicitacao || 0));
+                    renderizarTabela();
+                }
+            }
+        });
+
+        function aplicarFiltros() {
+            const texto = document.getElementById('filtroTexto').value.toLowerCase();
+            const status = document.getElementById('filtroStatus').value;
+            const ano = document.getElementById('filtroAno').value;
+
+            listaAtual = cacheSolicitacoesAluno.filter(item => {
+                const titulo = (item.nomeAtividade || item.observacao || '').toLowerCase();
+                const tipo = (item.nomeSubtipo || item.subtipoAtividade || '').toLowerCase();
+                const dataItem = item.dataSolicitacao || "";
+                
+                const matchTexto = titulo.includes(texto) || tipo.includes(texto);
+
+                let statusItem = item.status ? item.status.toUpperCase() : '';
+                const matchStatus = status === "" || statusItem.includes(status);
+
+                const matchAno = ano === "" || dataItem.startsWith(ano);
+
+                return matchTexto && matchStatus && matchAno;
+            });
+
+            paginaAtual = 1;
+            renderizarTabela();
+        }
+
+        function renderizarTabela() {
+            const tbody = document.getElementById('tabelaCorpo');
+            tbody.innerHTML = "";
+
+            if (listaAtual.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center py-5 text-muted">Nenhuma solicitação encontrada com esses filtros.</td></tr>';
+                atualizarPaginacaoUI(0);
+                return;
+            }
+
+            const inicio = (paginaAtual - 1) * itensPorPagina;
+            const fim = inicio + itensPorPagina;
+            const itensDaPagina = listaAtual.slice(inicio, fim);
+
+            itensDaPagina.forEach(item => {
+                let badgeClass = 'bg-secondary';
+                let btnJustificativa = '';
+
+                const statusStr = item.status ? item.status.toUpperCase() : 'DESCONHECIDO';
+
+                if (statusStr === 'DEFERIDO' || statusStr === 'DEFERIDA' || statusStr === 'APROVADO') badgeClass = 'bg-success';
+                else if (statusStr === 'PENDENTE') badgeClass = 'bg-warning text-dark';
+                else if (statusStr === 'INDEFERIDO' || statusStr === 'INDEFERIDA' || statusStr === 'REJEITADO') {
+                    badgeClass = 'bg-danger';
+                    btnJustificativa = `
+                        <button class="btn btn-sm btn-outline-danger me-1"
+                                onclick="mostrarJustificativa(${item.id})"
+                                title="Ver Motivo">
+                            <i class='bx bx-message-rounded-dots'></i>
+                        </button>`;
+                }
+
+                const nomeSubtipo = item.nomeSubtipo || item.subtipoAtividade || 'Atividade';
+                const tituloPrincipal = item.nomeAtividade 
+                                      ? `${item.nomeAtividade} ${item.participacao ? '(' + item.participacao + ')' : ''}`
+                                      : (item.observacao || item.observacaoDiscente || '---');
+                
+                const cargaHoraria = item.cargaHorariaSolicitada || item.cargaHorariaTotal || 0;
+                const dataFormatada = item.dataSolicitacao ? new Date(item.dataSolicitacao).toLocaleDateString('pt-BR', {timeZone: 'UTC'}) : '-';
+
+                const linha = `
+                    <tr>
+                        <td class="ps-4 fw-semibold">
+                            <div class="text-truncate" style="max-width: 250px;" title="${tituloPrincipal}">
+                                ${tituloPrincipal}
+                            </div>
+                            <div class="small text-muted">${nomeSubtipo}</div>
+                        </td>
+                        <td>${cargaHoraria}h</td>
+                        <td>${dataFormatada}</td>
+                        <td><span class="badge ${badgeClass} rounded-pill px-3">${item.status}</span></td>
+                        <td class="pe-4 text-end">
+                            ${btnJustificativa}
+                            <button class="btn btn-sm btn-outline-secondary" 
+                                    onclick="verDetalhesSolicitacao(${item.id})"
+                                    title="Ver Detalhes">
+                                <i class='bx bx-show'></i>
+                            </button>
+                        </td>
+                    </tr>`;
+                tbody.innerHTML += linha;
+            });
+
+            atualizarPaginacaoUI(Math.ceil(listaAtual.length / itensPorPagina));
+        }
+
+        function mostrarJustificativa(id) {
+            const item = listaAtual.find(s => s.id === id);
+            
+            if (item) {
+                const justificativa = item.observacaoResponsavel || "Nenhuma justificativa informada pela coordenação.";
+                
+                const modalBody = document.querySelector('#modalJustificativa .modal-body .alert');
+                if (modalBody) {
+                    modalBody.innerText = justificativa;
+                }
+
+                const modalEl = document.getElementById('modalJustificativa');
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+        }
+
+        function atualizarPaginacaoUI(totalPaginas) {
+            const container = document.getElementById('paginacaoContainer');
+            container.innerHTML = "";
+            if (totalPaginas <= 1) return;
+
+            const prevDisabled = paginaAtual === 1 ? 'disabled' : '';
+            container.innerHTML += `
+                <li class="page-item ${prevDisabled}">
+                    <a class="page-link border-0" href="#" onclick="mudarPagina(${paginaAtual - 1})" tabindex="-1"><i class='bx bx-chevron-left'></i> Anterior</a>
+                </li>`;
+
+            for (let i = 1; i <= totalPaginas; i++) {
+                const active = i === paginaAtual ? 'active' : '';
+                container.innerHTML += `
+                    <li class="page-item ${active}">
+                        <a class="page-link border-0 rounded-circle mx-1" href="#" onclick="mudarPagina(${i})">${i}</a>
+                    </li>`;
+            }
+
+            const nextDisabled = paginaAtual === totalPaginas ? 'disabled' : '';
+            container.innerHTML += `
+                <li class="page-item ${nextDisabled}">
+                    <a class="page-link border-0" href="#" onclick="mudarPagina(${paginaAtual + 1})">Próximo <i class='bx bx-chevron-right'></i></a>
+                </li>`;
+        }
+
+        function mudarPagina(novaPagina) {
+            if (novaPagina < 1 || novaPagina > Math.ceil(listaAtual.length / itensPorPagina)) return;
+            paginaAtual = novaPagina;
+            renderizarTabela();
+        }
+    </script>
+</body>
+</html>

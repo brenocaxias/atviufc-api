@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
+.anime-start {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease-out;
+}
+
+.anime-start.anime-end {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body {
+    display: block !important;
+    font-family: "Montserrat", Arial, sans-serif;
+    background-color: #f8f9fa;
+    overflow-x: hidden; 
+    min-height: 100vh;
+}
+
+.logo-fixed {
+    position: absolute;
+    top: 5px;
+    left: 50px;
+    width: 90px;
+    height: auto;
+    z-index: 10;
+}
+
+.card-glass {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(13, 71, 161, 0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.progress {
+            height: 25px;
+            border-radius: 15px;
+            background-color: #e9ecef;
+        }
+        .progress-bar {
+            font-weight: bold;
+            line-height: 25px;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.02);
+        }
+
+@media print {
+    .navbar,               
+    .btn,                  
+    .no-print,              
+    footer,               
+    .card-footer {      
+        display: none !important;
+    }
+
+    .card, .bg-light, body {
+        box-shadow: none !important;
+        background-color: white !important;
+        border: none !important;
+    }
+
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    body {
+        color: black !important;
+    }
+
+    .anime-start {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
